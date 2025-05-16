@@ -1,0 +1,215 @@
+@startuml
+!define LIGHTGREEN #E8F5E9
+!define DARKGREEN #2E7D32
+!define BLUE #E3F2FD
+!define DARKBLUE #1976D2
+!define ORANGE #FFF3E0
+!define DARKORANGE #F57C00
+!define PURPLE #F3E5F5
+!define DARKPURPLE #7B1FA2
+!define YELLOW #FFFDE7
+!define DARKYELLOW #FBC02D
+!define RED #FFEBEE
+!define DARKRED #C62828
+
+title Agri-Assist Platform - Complete Architecture Flow
+
+' Define main sections
+package "Data Sources" as DataSources {
+    component [Agricultural Datasets] as AgrData << (S,LIGHTGREEN) >>
+    component [IoT Sensors] as Sensors << (S,LIGHTGREEN) >>
+    component [Weather APIs] as Weather << (S,LIGHTGREEN) >>
+    component [Historical Crop Data] as HistData << (S,LIGHTGREEN) >>
+    component [User Input] as UserInput << (S,LIGHTGREEN) >>
+}
+
+package "Data Processing Layer" as DataProcessing {
+    component [Data Validation] as DataVal << (P,BLUE) >>
+    component [Data Cleaning] as DataClean << (P,BLUE) >>
+    component [Feature Engineering] as FeatureEng << (P,BLUE) >>
+    component [Data Preprocessing] as Preprocess << (P,BLUE) >>
+}
+
+package "ML Model Development" as MLDevelopment {
+    component [Model Training] as Training << (M,ORANGE) >>
+    component [Random Forest] as RF << (M,ORANGE) >>
+    component [SVM] as SVM << (M,ORANGE) >>
+    component [KNN] as KNN << (M,ORANGE) >>
+    component [Naive Bayes] as NB << (M,ORANGE) >>
+    component [Cross Validation] as CrossVal << (M,ORANGE) >>
+    component [Model Evaluation] as Evaluation << (M,ORANGE) >>
+    component [Model Selection] as Selection << (M,ORANGE) >>
+}
+
+package "Model Storage & Management" as ModelStorage {
+    database [Model Repository] as ModelRepo << (D,PURPLE) >>
+    database [Metrics Database] as MetricsDB << (D,PURPLE) >>
+    database [Feature Store] as FeatureStore << (D,PURPLE) >>
+    component [Model Versioning] as Versioning << (D,PURPLE) >>
+}
+
+package "Cloud Infrastructure" as CloudInfra {
+    node "Render.com" as Render {
+        component [Flask API] as FlaskAPI << (C,YELLOW) >>
+        component [Model Serving] as ModelServing << (C,YELLOW) >>
+        component [Load Balancer] as LoadBalancer << (C,YELLOW) >>
+        component [API Gateway] as APIGateway << (C,YELLOW) >>
+    }
+    
+    node "Database Layer" as DBLayer {
+        database [Prediction Cache] as PredCache << (D,PURPLE) >>
+        database [User Sessions] as UserSessions << (D,PURPLE) >>
+        database [System Logs] as SysLogs << (D,PURPLE) >>
+    }
+}
+
+package "Frontend Layer" as Frontend {
+    node "Netlify" as Netlify {
+        component [Streamlit App] as StreamlitApp << (F,RED) >>
+        component [Responsive UI] as ResponsiveUI << (F,RED) >>
+        component [Visualization Engine] as VizEngine << (F,RED) >>
+    }
+    
+    component [Web Interface] as WebUI << (F,RED) >>
+    component [Mobile App] as MobileApp << (F,RED) >>
+}
+
+package "Core Features" as CoreFeatures {
+    rectangle "Crop Prediction System" as CropPred {
+        component [Input Validation] as InputVal
+        component [Prediction Engine] as PredEngine
+        component [Result Visualization] as ResultViz
+    }
+    
+    rectangle "AI Chatbot" as Chatbot {
+        component [NLP Processing] as NLP
+        component [Multi-language Support] as MultiLang
+        component [Knowledge Base] as KB
+    }
+    
+    rectangle "Pesticide & Fertilizer Guide" as PestGuide {
+        component [Recommendation Engine] as RecommendEngine
+        component [Cost Analysis] as CostAnalysis
+        component [Application Guidelines] as AppGuidelines
+    }
+    
+    rectangle "Soil Requirements" as SoilReq {
+        component [Soil Analysis] as SoilAnalysis
+        component [Crop Compatibility] as CropCompat
+        component [Nutrient Mapping] as NutrientMap
+    }
+    
+    rectangle "Crop Rotation Planner" as CropRotation {
+        component [Rotation Optimizer] as RotationOpt
+        component [Yield Prediction] as YieldPred
+        component [Sustainability Metrics] as Sustainability
+    }
+}
+
+package "Admin Panel" as AdminPanel {
+    component [Data Management] as DataMgmt << (A,YELLOW) >>
+    component [Model Management] as ModelMgmt << (A,YELLOW) >>
+    component [User Analytics] as UserAnalytics << (A,YELLOW) >>
+    component [System Monitoring] as SysMon << (A,YELLOW) >>
+    component [Performance Dashboard] as PerfDash << (A,YELLOW) >>
+}
+
+package "External Integrations" as ExtIntegrations {
+    component [Weather Services] as WeatherSvc << (E,DARKGREEN) >>
+    component [Market Data APIs] as MarketAPI << (E,DARKGREEN) >>
+    component [Government Databases] as GovDB << (E,DARKGREEN) >>
+    component [Research Institutions] as ResearchInst << (E,DARKGREEN) >>
+}
+
+' Define relationships and flow
+' Data Sources to Processing
+AgrData --> DataVal : <<raw data>>
+Sensors --> DataVal : <<sensor readings>>
+Weather --> DataVal : <<weather data>>
+HistData --> DataVal : <<historical records>>
+UserInput --> DataVal : <<user inputs>>
+
+' Data Processing Flow
+DataVal --> DataClean : <<validated data>>
+DataClean --> FeatureEng : <<cleaned data>>
+FeatureEng --> Preprocess : <<features>>
+Preprocess --> Training : <<processed data>>
+
+' Model Development Flow
+Training --> RF : <<train model>>
+Training --> SVM : <<train model>>
+Training --> KNN : <<train model>>
+Training --> NB : <<train model>>
+RF --> CrossVal : <<model output>>
+SVM --> CrossVal : <<model output>>
+KNN --> CrossVal : <<model output>>
+NB --> CrossVal : <<model output>>
+CrossVal --> Evaluation : <<cv results>>
+Evaluation --> Selection : <<metrics>>
+Selection --> ModelRepo : <<best model>>
+
+' Model Storage Flow
+Selection --> ModelRepo : <<store model>>
+Evaluation --> MetricsDB : <<store metrics>>
+FeatureEng --> FeatureStore : <<store features>>
+ModelRepo --> Versioning : <<version control>>
+
+' Cloud Infrastructure Flow
+ModelRepo --> ModelServing : <<load model>>
+ModelServing --> FlaskAPI : <<model instance>>
+FlaskAPI --> APIGateway : <<expose endpoints>>
+APIGateway --> LoadBalancer : <<route requests>>
+FlaskAPI --> PredCache : <<cache predictions>>
+FlaskAPI --> UserSessions : <<store sessions>>
+FlaskAPI --> SysLogs : <<log operations>>
+
+' Frontend Flow
+LoadBalancer --> StreamlitApp : <<API responses>>
+StreamlitApp --> ResponsiveUI : <<render UI>>
+ResponsiveUI --> VizEngine : <<create charts>>
+VizEngine --> WebUI : <<display results>>
+VizEngine --> MobileApp : <<mobile view>>
+
+' Core Features Integration
+StreamlitApp --> CropPred : <<host feature>>
+StreamlitApp --> Chatbot : <<integrate bot>>
+StreamlitApp --> PestGuide : <<show guide>>
+StreamlitApp --> SoilReq : <<soil module>>
+StreamlitApp --> CropRotation : <<rotation tool>>
+
+' Admin Panel Connections
+FlaskAPI --> DataMgmt : <<manage data>>
+ModelRepo --> ModelMgmt : <<manage models>>
+UserSessions --> UserAnalytics : <<analyze users>>
+SysLogs --> SysMon : <<monitor system>>
+MetricsDB --> PerfDash : <<show metrics>>
+
+' External Integrations
+WeatherSvc --> Weather : <<provide data>>
+MarketAPI --> FlaskAPI : <<market prices>>
+GovDB --> AgrData : <<govt regulations>>
+ResearchInst --> HistData : <<research data>>
+
+' Admin to Core Features
+DataMgmt --> DataVal : <<validate data>>
+ModelMgmt --> ModelServing : <<deploy models>>
+SysMon --> FlaskAPI : <<monitor health>>
+
+' User Interaction Flow
+WebUI --> InputVal : <<user input>>
+InputVal --> PredEngine : <<validated input>>
+PredEngine --> ModelServing : <<get prediction>>
+ModelServing --> ResultViz : <<prediction result>>
+ResultViz --> WebUI : <<show results>>
+
+' Chatbot Flow
+WebUI --> NLP : <<user query>>
+NLP --> KB : <<process query>>
+KB --> MultiLang : <<generate response>>
+MultiLang --> WebUI : <<display answer>>
+
+note top of AgrData : "Primary data sources for training models"
+note top of FlaskAPI : "RESTful API endpoints serving ML models"
+note top of StreamlitApp : "Interactive web application built with Streamlit"
+note top of AdminPanel : "Comprehensive admin dashboard for system management"
+@enduml

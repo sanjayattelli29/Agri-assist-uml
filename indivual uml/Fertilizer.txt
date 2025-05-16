@@ -1,0 +1,27 @@
+@startuml
+title Fertilizer Suggestion System (E-Commerce Filtering with Supabase)
+
+' UI and Filter System
+package "Web Interface (Fertilizer Store)" {
+    [Product Display UI\n(Image, Name, Rating, Price, Buy Link)] as FertilizerUI
+    [Filter Sidebar\n(Crop, Rating, Price)] as FertilizerFilters
+}
+
+' Supabase Interaction
+package "Backend API" {
+    [Filter Processor\nBuild query to Supabase] as FertilizerAPI
+    [Supabase Table\n(Fertilizer Info: crop, price,\nrating, link, image path)] as FertilizerTable
+    [Supabase Bucket\n(Fertilizer Images)] as FertilizerImages
+}
+
+' Flow
+FertilizerFilters --> FertilizerAPI : Send filter values
+FertilizerAPI --> FertilizerTable : Query filtered products
+FertilizerTable --> FertilizerAPI : Return matched items
+
+FertilizerAPI --> FertilizerImages : Fetch image URLs
+FertilizerImages --> FertilizerAPI : Return image links
+
+FertilizerAPI --> FertilizerUI : Send final list (JSON)
+
+@enduml

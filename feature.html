@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agri-Assist Platform - Architecture Flow</title>
+    <link rel="stylesheet" href="uml.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="particles-bg" id="particles-js"></div>
+
+    <nav class="main-nav">
+        <div class="nav-logo">Agri-Assist Platform</div>
+        <ul class="nav-links">
+            <li><a href="#" class="nav-link active" data-page="workflow">Architecture Flow</a></li>
+            <li><a href="feature.html" class="nav-link">Feature Exploration</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <!-- Workflow View Only -->
+        <div class="page-view workflow-view active" id="workflow-view">
+            <div class="diagram-container" id="diagram">
+                <div class="package" id="data-sources">
+                    <div class="package-title">Data Sources</div>
+                    <div class="component">Agricultural Datasets</div>
+                    <div class="component">IoT Sensors</div>
+                    <div class="component">Weather APIs</div>
+                    <div class="component">Historical Crop Data</div>
+                    <div class="component">User Input</div>
+                </div>
+
+                <div class="package" id="data-processing">
+                    <div class="package-title">Data Processing Layer</div>
+                    <div class="component">Data Validation</div>
+                    <div class="component">Data Cleaning</div>
+                    <div class="component">Feature Engineering</div>
+                    <div class="component">Data Preprocessing</div>
+                </div>
+
+                <div class="package" id="ml-development">
+                    <div class="package-title">ML Model Development</div>
+                    <div class="component">Model Training</div>
+                    <div class="component">Random Forest</div>
+                    <div class="component">SVM</div>
+                    <div class="component">KNN</div>
+                    <div class="component">Naive Bayes</div>
+                    <div class="component">Cross Validation</div>
+                    <div class="component">Model Evaluation</div>
+                    <div class="component">Model Selection</div>
+                </div>
+
+                <div class="package" id="model-storage">
+                    <div class="package-title">Model Storage & Management</div>
+                    <div class="component">Model Repository</div>
+                    <div class="component">Metrics Database</div>
+                    <div class="component">Feature Store</div>
+                    <div class="component">Model Versioning</div>
+                </div>
+
+                <div class="package" id="external-integrations">
+                    <div class="package-title">External Integrations</div>
+                    <div class="component">Weather Services</div>
+                    <div class="component">Market Data APIs</div>
+                    <div class="component">Government Databases</div>
+                    <div class="component">Research Institutions</div>
+                </div>
+
+                <div class="package" id="frontend">
+                    <div class="package-title">Frontend Layer</div>
+                    <div class="component">Streamlit App</div>
+                    <div class="component">Responsive UI</div>
+                    <div class="component">Visualization Engine</div>
+                    <div class="component">Web Interface</div>
+                    <div class="component">Mobile App</div>
+                </div>
+
+                <div class="package" id="cloud-infra">
+                    <div class="package-title">Cloud Infrastructure</div>
+                    <div class="component">Flask API</div>
+                    <div class="component">Model Serving</div>
+                    <div class="component">Load Balancer</div>
+                    <div class="component">API Gateway</div>
+                    <div class="component">Prediction Cache</div>
+                    <div class="component">User Sessions</div>
+                    <div class="component">System Logs</div>
+                </div>
+
+                <div class="package" id="core-features">
+                    <div class="package-title">Core Features</div>
+                    <div class="component">Crop Prediction</div>
+                    <div class="component">AI Chatbot</div>
+                    <div class="component">Pesticide Guide</div>
+                    <div class="component">Soil Requirements</div>
+                    <div class="component">Crop Rotation</div>
+                </div>
+
+                <div class="package" id="admin-panel">
+                    <div class="package-title">Admin Panel</div>
+                    <div class="component">Data Management</div>
+                    <div class="component">Model Management</div>
+                    <div class="component">User Analytics</div>
+                    <div class="component">System Monitoring</div>
+                    <div class="component">Performance Dashboard</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="legend">
+            <h3>Color Legend</h3>
+            <div class="legend-item">
+                <div class="legend-color" style="background-color: var(--dark-green);"></div>
+                <span>Data Sources</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background-color: var(--dark-blue);"></div>
+                <span>Data Processing</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background-color: var(--dark-orange);"></div>
+                <span>ML Development</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background-color: var(--dark-purple);"></div>
+                <span>Model Storage</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background-color: var(--dark-yellow);"></div>
+                <span>Cloud & Admin</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background-color: var(--dark-red);"></div>
+                <span>Frontend</span>
+            </div>
+        </div>
+
+        <div class="zoom-controls">
+            <button class="zoom-btn" id="zoom-in">+</button>
+            <button class="zoom-btn" id="zoom-out">-</button>
+            <button class="zoom-btn" id="zoom-reset">⟲</button>
+        </div>
+
+        <div class="tooltip" id="tooltip"></div>
+    </div>
+
+    <script src="feature.js"></script>
+</body>
+</html>

@@ -1,0 +1,27 @@
+@startuml
+title Pesticide Suggestion System (E-Commerce Style Filtering)
+
+' UI and Filter System
+package "Web Interface (Pesticide Store)" {
+    [Product Display UI\n(Image, Name, Rating, Price, Buy Link)] as ProductUI
+    [Filter Sidebar\n(Crop, Rating, Price)] as Filters
+}
+
+' Supabase Interaction
+package "Backend API" {
+    [Filter Processor\nBuild query to Supabase] as FilterAPI
+    [Supabase Table\n(Pesticide Info: crop, price,\nrating, link, image path)] as PesticideTable
+    [Supabase Bucket\n(Pesticide Images)] as ImageBucket
+}
+
+' Flow
+Filters --> FilterAPI : Send filter params
+FilterAPI --> PesticideTable : Fetch matched data
+PesticideTable --> FilterAPI : Return product records
+
+FilterAPI --> ImageBucket : Fetch image URLs
+ImageBucket --> FilterAPI : Return image links
+
+FilterAPI --> ProductUI : Send final data (JSON)
+
+@enduml

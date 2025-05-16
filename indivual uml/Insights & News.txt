@@ -1,0 +1,44 @@
+@startuml
+title Insights & News System (Gemini API Powered)
+
+' UI Layer
+package "Web Interface" {
+    [Insights Page\n(Triggered on refresh)] as InsightsUI
+    [News Page\n(Triggered on refresh)] as NewsUI
+}
+
+' Backend Layer
+package "Backend Services" {
+    [Insights Processor\nFetch Insight Questions] as InsightsProcessor
+    [News Processor\nFetch News Questions] as NewsProcessor
+    [Result Composer\nMerge Gemini Replies] as AnswerMerger
+}
+
+' Data Layer
+package "Supabase Storage" {
+    [Supabase Table\nPredefined Insight Questions] as InsightTable
+    [Supabase Table\nPredefined News Questions] as NewsTable
+}
+
+' AI Layer
+package "Gemini AI API" {
+    [Gemini API\nReal-time Answer Generation\n(Based on latest news/trends)] as Gemini
+}
+
+' Flow: Insights
+InsightsUI --> InsightsProcessor : Refresh triggered
+InsightsProcessor --> InsightTable : Fetch Insight prompts
+InsightTable --> InsightsProcessor : Return prompt list
+InsightsProcessor --> Gemini : Send questions
+Gemini --> AnswerMerger : Send AI-generated answers
+AnswerMerger --> InsightsUI : Send insights content
+
+' Flow: News
+NewsUI --> NewsProcessor : Refresh triggered
+NewsProcessor --> NewsTable : Fetch News prompts
+NewsTable --> NewsProcessor : Return prompt list
+NewsProcessor --> Gemini : Send questions
+Gemini --> AnswerMerger : Send news responses
+AnswerMerger --> NewsUI : Display news content
+
+@enduml

@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agri-Assist Platform</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+         :root {
+            --primary-color: #00f0ff;
+            --secondary-color: #0066ff;
+            --accent-color: #ff0066;
+            --text-color: #ffffff;
+            --text-secondary: #b4b4d1;
+            --bg-color: #0a0a18;
+            --bg-secondary: #10101e;
+            --card-bg: rgba(16, 16, 30, 0.6);
+            --glass-bg: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --hover-transform: translateY(-5px) scale(1.02);
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        /* Animated Background */
+        
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 20% 50%, rgba(0, 240, 255, 0.1) 0%, transparent 50%), radial-gradient(circle at 80% 20%, rgba(0, 102, 255, 0.1) 0%, transparent 50%), radial-gradient(circle at 40% 80%, rgba(255, 0, 102, 0.1) 0%, transparent 50%);
+            animation: gradientShift 15s ease infinite;
+            z-index: -1;
+        }
+        
+        @keyframes gradientShift {
+            0%,
+            100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.7;
+            }
+        }
+        /* Navigation */
+        
+        .nav {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            max-width: 1200px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            box-shadow: 0 8px 32px rgba(0, 240, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .nav:hover {
+            box-shadow: 0 12px 40px rgba(0, 240, 255, 0.2);
+        }
+        
+        .nav-logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+            align-items: center;
+        }
+        
+        .nav-link {
+            color: var(--text-color);
+            text-decoration: none;
+            font-weight: 500;
+            position: relative;
+            transition: all 0.3s ease;
+            padding: 0.5rem 1rem;
+            border-radius: 10px;
+        }
+        
+        .nav-link::before {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+        
+        .nav-link:hover {
+            color: var(--primary-color);
+            background: rgba(0, 240, 255, 0.1);
+        }
+        
+        .nav-link:hover::before {
+            width: 80%;
+        }
+        /* Hero Section */
+        
+        .hero {
+            padding: 150px 2rem 8rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(180deg, transparent 0%, rgba(10, 10, 24, 0.8) 100%);
+            z-index: 1;
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+        
+        .hero h1 {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color), var(--accent-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+        
+        .hero p {
+            font-size: 1.4rem;
+            max-width: 900px;
+            margin: 0 auto 3rem;
+            color: var(--text-secondary);
+            font-weight: 300;
+        }
+        
+        .cta-button {
+            display: inline-block;
+            padding: 1rem 2.5rem;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: var(--bg-color);
+            text-decoration: none;
+            border-radius: 15px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+        
+        .cta-button:hover {
+            transform: var(--hover-transform);
+            box-shadow: 0 10px 40px rgba(0, 240, 255, 0.3);
+        }
+        
+        .cta-button:hover::before {
+            left: 100%;
+        }
+        /* Features Section */
+        
+        .features {
+            padding: 8rem 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .features h2 {
+            text-align: center;
+            margin-bottom: 4rem;
+            font-size: 3rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2.5rem;
+        }
+        
+        .feature-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            padding: 2.5rem;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .feature-card:hover {
+            transform: var(--hover-transform);
+            box-shadow: 0 15px 50px rgba(0, 240, 255, 0.15);
+        }
+        
+        .feature-card:hover::before {
+            opacity: 1;
+        }
+        
+        .feature-card h3 {
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+        
+        .feature-card p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+        /* Architecture Section */
+        
+        .architecture {
+            padding: 8rem 2rem;
+            text-align: center;
+            background: linear-gradient(180deg, transparent 0%, rgba(16, 16, 30, 0.3) 100%);
+            position: relative;
+        }
+        
+        .architecture h2 {
+            color: var(--primary-color);
+            margin-bottom: 2rem;
+            font-size: 3rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .architecture p {
+            margin-bottom: 3rem;
+            font-size: 1.3rem;
+            color: var(--text-secondary);
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .view-arch-btn {
+            display: inline-block;
+            padding: 1.2rem 3rem;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 2px solid var(--glass-border);
+            color: var(--text-color);
+            text-decoration: none;
+            border-radius: 15px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .view-arch-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: -1;
+        }
+        
+        .view-arch-btn:hover {
+            transform: var(--hover-transform);
+            box-shadow: 0 10px 40px rgba(0, 240, 255, 0.3);
+        }
+        
+        .view-arch-btn:hover::before {
+            opacity: 0.1;
+        }
+        /* Floating particles */
+        
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: var(--primary-color);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        .particle:nth-child(1) {
+            top: 20%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+        
+        .particle:nth-child(2) {
+            top: 60%;
+            left: 85%;
+            animation-delay: 2s;
+        }
+        
+        .particle:nth-child(3) {
+            top: 40%;
+            left: 70%;
+            animation-delay: 4s;
+        }
+        
+        @keyframes float {
+            0%,
+            100% {
+                transform: translateY(0px) rotate(0deg);
+            }
+            50% {
+                transform: translateY(-20px) rotate(180deg);
+            }
+        }
+        /* Responsive Design */
+        
+        @media (max-width: 768px) {
+            .nav {
+                top: 10px;
+                width: 95%;
+                padding: 0.8rem 1.5rem;
+            }
+            .nav-links {
+                gap: 1.5rem;
+            }
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            .hero p {
+                font-size: 1.1rem;
+            }
+            .features h2,
+            .architecture h2 {
+                font-size: 2rem;
+            }
+            .feature-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+
+    <nav class="nav">
+        <div class="nav-logo">Agri-Assist Platform</div>
+        <ul class="nav-links">
+            <li><a href="#features" class="nav-link">Features</a></li>
+            <li><a href="#architecture" class="nav-link">Architecture</a></li>
+            <li><a href="uml.html" class="nav-link">UML Flow</a></li>
+            <li><a href="feature.html" class="nav-link">Features Flow</a></li>
+        </ul>
+    </nav>
+
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Agri-Assist Platform</h1>
+            <p>An advanced agricultural assistance platform powered by cutting-edge AI and machine learning, providing intelligent crop predictions, personalized recommendations, and comprehensive farming insights for the future of agriculture.</p>
+            <a href="#features" class="cta-button">Explore Features</a>
+        </div>
+    </section>
+
+    <section id="features" class="features">
+        <h2>Core Features</h2>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h3>🌱 Crop Prediction System</h3>
+                <p>Advanced ML models for accurate crop predictions based on soil conditions, weather patterns, and historical data with 95% accuracy rate.</p>
+            </div>
+            <div class="feature-card">
+                <h3>🤖 AI Chatbot</h3>
+                <p>Intelligent assistant with multi-language support and extensive agricultural knowledge base, available 24/7 for farmer support.</p>
+            </div>
+            <div class="feature-card">
+                <h3>🧪 Pesticide & Fertilizer Guide</h3>
+                <p>Smart recommendations for pesticides and fertilizers with cost analysis, application guidelines, and environmental impact assessment.</p>
+            </div>
+            <div class="feature-card">
+                <h3>🌍 Soil Requirements</h3>
+                <p>Detailed soil analysis, crop compatibility checks, and nutrient mapping capabilities with real-time monitoring.</p>
+            </div>
+            <div class="feature-card">
+                <h3>🔄 Crop Rotation Planner</h3>
+                <p>Optimize crop rotation patterns with yield predictions, sustainability metrics, and long-term soil health analysis.</p>
+            </div>
+            <div class="feature-card">
+                <h3>🌤️ Weather Integration</h3>
+                <p>Real-time weather data integration for informed decision-making, risk management, and automated irrigation control.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="architecture" class="architecture">
+        <h2>Platform Architecture</h2>
+        <p>Explore our comprehensive system architecture featuring microservices, cloud-native design, and cutting-edge AI/ML components that power the future of digital agriculture.</p>
+        <a href="uml.html" class="view-arch-btn">View Architecture Flow</a>
+    </section>
+</body>
+
+</html>

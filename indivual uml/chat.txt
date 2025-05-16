@@ -1,0 +1,25 @@
+@startuml
+title Multilingual AI Chatbot Integration (Gemini API + Language Selector)
+
+' Chatbot UI Interface
+package "Web Interface (Chatbot)" {
+    [Chatbot UI\n(Tailwind + TypeScript)] as ChatUI
+    [Language Selector\n(Telugu, English, Hindi,\nKannada, Malayalam)] as LangSelector
+}
+
+' API Gateway
+package "Backend Chat Handler" {
+    [Chat Request Processor\n(Language → Gemini Prompt)] as Processor
+    [Gemini API Integration\n(Google Gemini Key)] as GeminiAPI
+}
+
+' Flow from user to answer
+ChatUI --> LangSelector : User selects language
+LangSelector --> Processor : Pass selected language
+ChatUI --> Processor : Send user question\n(in selected language)
+
+Processor --> GeminiAPI : Format + send query
+GeminiAPI --> Processor : Return response
+Processor --> ChatUI : Show translated + formatted response
+
+@enduml

@@ -1,0 +1,41 @@
+@startuml
+title Crop Prediction System (Full Metric Comparison + Best Model)
+
+' Frontend
+package "Frontend (Netlify)" {
+    [UI\n(TypeScript + TailwindCSS)] as UI
+}
+
+' Backend (Gunicorn + Flask)
+package "Backend API (Render)" {
+    [Gunicorn + Flask API\n(Python, Port 8081)] as FlaskAPI
+    [ML Models\nRandom Forest,\nKNN, SVM, Naive Bayes] as MLModels
+    [Metrics Engine\nAccuracy, F1, ROC-AUC,\nLogLoss, R², etc.] as Metrics
+    [Best Model Selector\nModel recommendation] as Recommender
+    [Cache Layer\n(Performance Optimization)] as Cache
+}
+
+' Database
+package "Database (Supabase)" {
+    [Crop Images\n(Dynamic Uploads)] as Images
+    [Prediction Result\n(Crop + Metrics JSON)] as CropData
+}
+
+' User input flow
+UI --> FlaskAPI : Send 7 features\n(N, P, K, Humidity, Rainfall,\npH, Temperature)
+
+FlaskAPI --> Cache : Check cached result
+Cache --> FlaskAPI : Return if cached
+
+FlaskAPI --> MLModels : Predict with all 4 models
+MLModels --> Metrics : Compute all metrics
+Metrics --> Recommender : Analyze & pick best model
+Recommender --> FlaskAPI : Send full table + best model
+
+FlaskAPI --> CropData : Store metrics + recommendation
+FlaskAPI --> Images : Fetch crop image dynamically
+
+CropData --> UI : Send metric table + best model (JSON)
+Images --> UI : Send crop image URL
+
+@enduml

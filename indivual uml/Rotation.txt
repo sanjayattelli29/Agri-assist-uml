@@ -1,0 +1,24 @@
+@startuml
+title Crop Rotation Guide (Supabase + Gemini API)
+
+' Web Interface
+package "Web Interface (Rotation Guide)" {
+    [Crop Rotation UI\n(Input: Present Crop)] as RotationUI
+}
+
+' Backend and Data Layer
+package "Backend Processor" {
+    [Supabase Query\nRotation Data (Next Crop,\nRotation Period)] as RotationDB
+    [Gemini API\n(Notes, Benefits)] as GeminiRotation
+    [Result Composer\nMerge DB + Gemini] as RotationLogic
+}
+
+' Flow
+RotationUI --> RotationDB : Send present crop name
+RotationDB --> RotationLogic : Return next crop + rotation period
+RotationLogic --> GeminiRotation : Fetch notes + benefits
+GeminiRotation --> RotationLogic : Return Gemini content
+
+RotationLogic --> RotationUI : Send full response\n(Next crop, Period, Notes, Benefits)
+
+@enduml

@@ -1,0 +1,18 @@
+@startuml
+title Soil Requirements Guide (N, P, K, pH, Temp, Rainfall, Humidity)
+
+' Web Interface
+package "Web Interface (Soil Guide)" {
+    [Soil Requirement UI\n(Input: Crop Name)] as SoilUI
+}
+
+' Supabase
+package "Backend Data Layer" {
+    [Supabase Table\nCrop → Soil Data:\nN, P, K, pH, etc.] as SoilDB
+}
+
+' Flow
+SoilUI --> SoilDB : Send crop name
+SoilDB --> SoilUI : Return soil requirements JSON
+
+@enduml
