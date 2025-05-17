@@ -97,108 +97,115 @@ function drawConnection(fromId, toId, color, svg) {
     const fromPackage = fromElement.closest('.package');
     const toPackage = toElement.closest('.package');
     
-    // Get package positions
-    const fromPackageRect = fromPackage ? fromPackage.getBoundingClientRect() : fromRect;
-    const toPackageRect = toPackage ? toPackage.getBoundingClientRect() : toRect;
-    
-    // Calculate positions relative to the diagram
+    // Calculate the centers of the elements
     const fromCenterX = fromRect.left - diagramRect.left + fromRect.width / 2;
     const fromCenterY = fromRect.top - diagramRect.top + fromRect.height / 2;
     const toCenterX = toRect.left - diagramRect.left + toRect.width / 2;
     const toCenterY = toRect.top - diagramRect.top + toRect.height / 2;
     
-    // Calculate the direction vector between centers
+    // Determine if the connection is mostly horizontal or vertical
     const dx = toCenterX - fromCenterX;
     const dy = toCenterY - fromCenterY;
-    const distance = Math.sqrt(dx * dx + dy * dy);
-    const unitDx = dx / distance;
-    const unitDy = dy / distance;
+    const isHorizontal = Math.abs(dx) > Math.abs(dy);
     
-    // Calculate intersection points with the package borders
-    // Start from the component and go towards the edge of its package
+    // Calculate the edge points instead of center points
     let fromX, fromY, toX, toY;
     
-    // For the starting point (from)
-    if (fromPackage) {
-        // Check if horizontal or vertical connection is shorter
-        if (Math.abs(unitDx) > Math.abs(unitDy)) {
-            // Horizontal connection is dominant
-            fromX = unitDx > 0 ? 
-                fromPackageRect.right - diagramRect.left : 
-                fromPackageRect.left - diagramRect.left;
-            fromY = fromCenterY;
-        } else {
-            // Vertical connection is dominant
-            fromX = fromCenterX;
-            fromY = unitDy > 0 ? 
-                fromPackageRect.bottom - diagramRect.top : 
-                fromPackageRect.top - diagramRect.top;
+    if (isHorizontal) {
+        // For horizontal connections, use left/right edges
+        if (dx > 0) { // From left to right
+            fromX = fromRect.right - diagramRect.left + 2; // Add small offset
+            toX = toRect.left - diagramRect.left - 2; // Add small offset
+        } else { // From right to left
+            fromX = fromRect.left - diagramRect.left - 2; // Add small offset
+            toX = toRect.right - diagramRect.left + 2; // Add small offset
         }
-    } else {
-        fromX = fromCenterX;
         fromY = fromCenterY;
-    }
-    
-    // For the ending point (to)
-    if (toPackage) {
-        // Check if horizontal or vertical connection is shorter
-        if (Math.abs(unitDx) > Math.abs(unitDy)) {
-            // Horizontal connection is dominant
-            toX = unitDx > 0 ? 
-                toPackageRect.left - diagramRect.left : 
-                toPackageRect.right - diagramRect.left;
-            toY = toCenterY;
-        } else {
-            // Vertical connection is dominant
-            toX = toCenterX;
-            toY = unitDy > 0 ? 
-                toPackageRect.top - diagramRect.top : 
-                toPackageRect.bottom - diagramRect.top;
-        }
-    } else {
-        toX = toCenterX;
         toY = toCenterY;
+    } else {
+        // For vertical connections, use top/bottom edges
+        if (dy > 0) { // From top to bottom
+            fromY = fromRect.bottom - diagramRect.top + 2; // Add small offset
+            toY = toRect.top - diagramRect.top - 2; // Add small offset
+        } else { // From bottom to top
+            fromY = fromRect.top - diagramRect.top - 2; // Add small offset
+            toY = toRect.bottom - diagramRect.top + 2; // Add small offset
+        }
+        fromX = fromCenterX;
+        toX = toCenterX;
     }
     
-    // Create path
+    // Add some jitter to avoid overlapping connections
+    const jitter = Math.random() * 4 - 2; // Random value between -2 and 2
+    if (isHorizontal) {
+        fromY += jitter;
+        toY += jitter;
+    } else {
+        fromX += jitter;
+        toX += jitter;
+    }
+    
+    // Calculate control points for the curve
+    let controlPoint1X, controlPoint1Y, controlPoint2X, controlPoint2Y;
+    
+    // Adjust control points based on direction
+    if (isHorizontal) {
+        // Horizontal connection
+        const midX = (fromX + toX) / 2;
+        controlPoint1X = fromX + (midX - fromX) * 0.5;
+        controlPoint1Y = fromY;
+        controlPoint2X = toX - (toX - midX) * 0.5;
+        controlPoint2Y = toY;
+    } else {
+        // Vertical connection
+        const midY = (fromY + toY) / 2;
+        controlPoint1X = fromX;
+        controlPoint1Y = fromY + (midY - fromY) * 0.5;
+        controlPoint2X = toX;
+        controlPoint2Y = toY - (toY - midY) * 0.5;
+    }
+    
+    // Create the path
     const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
     
-    // Adjust the curve based on distance
-    const curveOffset = Math.min(distance * 0.3, 100);
-    
-    // Create a curved path with better control points
-    let pathData;
-    
-    // Determine if we should use a straight or curved line based on distance
-    if (distance < 100) {
-        // For short distances, use a straight line
-        pathData = `M ${fromX},${fromY} L ${toX},${toY}`;
-    } else {
-        // For longer distances, use a curved path
-        // Calculate control points based on the direction
-        const cp1x = fromX + unitDx * curveOffset;
-        const cp1y = fromY + unitDy * curveOffset;
-        const cp2x = toX - unitDx * curveOffset;
-        const cp2y = toY - unitDy * curveOffset;
-        
-        pathData = `M ${fromX},${fromY} C ${cp1x},${cp1y} ${cp2x},${cp2y} ${toX},${toY}`;
-    }
+    // Define the path using a cubic Bezier curve
+    const pathData = `M ${fromX} ${fromY} C ${controlPoint1X} ${controlPoint1Y}, ${controlPoint2X} ${controlPoint2Y}, ${toX} ${toY}`;
     
     path.setAttribute('d', pathData);
     path.setAttribute('stroke', color);
-    path.setAttribute('stroke-width', '1.5'); // Reduced from 2.5 to 1.5
+    path.setAttribute('stroke-width', '1.5');
     path.setAttribute('fill', 'none');
-    path.setAttribute('opacity', '0.8'); // Added slight transparency
+    path.setAttribute('opacity', '0.8');
+    path.setAttribute('data-from', fromId);
+    path.setAttribute('data-to', toId);
     
-    // Get the package type for the arrowhead
-    const fromPackageType = fromPackage ? fromPackage.id : 'default';
-    path.setAttribute('marker-end', `url(#arrowhead-${fromPackageType})`);
+    // Add arrow marker
+    const markerId = `arrow-${fromId}-${toId}`;
     
-    // Add subtle glow effect
-    path.setAttribute('filter', 'url(#glow)');
+    // Check if marker already exists
+    let marker = document.getElementById(markerId);
+    if (!marker) {
+        marker = document.createElementNS('http://www.w3.org/2000/svg', 'marker');
+        marker.setAttribute('id', markerId);
+        marker.setAttribute('viewBox', '0 0 10 10');
+        marker.setAttribute('refX', '5');
+        marker.setAttribute('refY', '5');
+        marker.setAttribute('markerWidth', '6');
+        marker.setAttribute('markerHeight', '6');
+        marker.setAttribute('orient', 'auto-start-reverse');
+        
+        const arrowPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        arrowPath.setAttribute('d', 'M 0 0 L 10 5 L 0 10 z');
+        arrowPath.setAttribute('fill', color);
+        
+        marker.appendChild(arrowPath);
+        svg.appendChild(marker);
+    }
+    
+    path.setAttribute('marker-end', `url(#${markerId})`);
     
     // Add animation
-    path.setAttribute('stroke-dasharray', '4,3'); // Reduced dash size
+    path.setAttribute('stroke-dasharray', '4,3');
     path.setAttribute('class', 'animated-path');
     
     // Add path to SVG
@@ -304,32 +311,75 @@ function drawConnections() {
     
     // Define connections
     const connections = [
-        // Web UI to Backend
-        { from: 'crop-prediction', to: 'flask-api', color: getPackageColor('core-features') },
-        { from: 'ai-chatbot', to: 'flask-api', color: getPackageColor('core-features') },
-        { from: 'pesticide-guide', to: 'flask-api', color: getPackageColor('core-features') },
-        { from: 'soil-requirements', to: 'flask-api', color: getPackageColor('core-features') },
-        { from: 'crop-rotation', to: 'flask-api', color: getPackageColor('core-features') },
-      
-        // Backend to Supabase
-        { from: 'flask-api', to: 'model-repository', color: getPackageColor('cloud-infra') },
-        { from: 'flask-api', to: 'metrics-database', color: getPackageColor('cloud-infra') },
-      
-        // Chatbot to Gemini API (abstracted as external integration)
-        { from: 'ai-chatbot', to: 'research-institutions', color: getPackageColor('core-features') },
-      
-        // Prediction Engine Flow
-        { from: 'crop-prediction', to: 'model-serving', color: getPackageColor('core-features') },
-        { from: 'model-serving', to: 'visualization-engine', color: getPackageColor('cloud-infra') },
-      
-        // Store UI to Supabase Buckets
-        { from: 'pesticide-guide', to: 'model-versioning', color: getPackageColor('core-features') },
-        { from: 'soil-requirements', to: 'metrics-database', color: getPackageColor('core-features') },
-      
-        // Admin to Metrics
-        { from: 'performance-dashboard', to: 'metrics-database', color: getPackageColor('admin-panel') },
-      ];
-      
+        // Web Interface → Flask Backend Connections
+        { from: 'agr-data', to: 'data-validation', color: getPackageColor('data-sources') },
+        { from: 'sensors', to: 'chat-processor', color: getPackageColor('data-sources') },
+        { from: 'weather', to: 'pesticide-proc', color: getPackageColor('data-sources') },
+        { from: 'hist-data', to: 'fertilizer-proc', color: getPackageColor('data-sources') },
+        { from: 'user-input', to: 'rotation-engine', color: getPackageColor('data-sources') },
+        { from: 'soil-ui', to: 'soil-engine', color: getPackageColor('data-sources') },
+        { from: 'insights-ui', to: 'insights-gen', color: getPackageColor('data-sources') },
+        { from: 'news-ui', to: 'news-gen', color: getPackageColor('data-sources') },
+        
+        // Flask Backend → Supabase Connections
+        { from: 'data-validation', to: 'data-cleaning', color: getPackageColor('data-processing') },
+        { from: 'data-cleaning', to: 'feature-engineering', color: getPackageColor('data-processing') },
+        { from: 'feature-engineering', to: 'model-training', color: getPackageColor('data-processing') },
+        { from: 'feature-engineering', to: 'data-sync', color: getPackageColor('data-processing') },
+        { from: 'pesticide-proc', to: 'random-forest', color: getPackageColor('data-processing') },
+        { from: 'pesticide-proc', to: 'model-selection', color: getPackageColor('data-processing') },
+        { from: 'fertilizer-proc', to: 'svm', color: getPackageColor('data-processing') },
+        { from: 'fertilizer-proc', to: 'model-selection', color: getPackageColor('data-processing') },
+        { from: 'rotation-engine', to: 'knn', color: getPackageColor('data-processing') },
+        { from: 'soil-engine', to: 'naive-bayes', color: getPackageColor('data-processing') },
+        { from: 'insights-gen', to: 'cross-validation', color: getPackageColor('data-processing') },
+        { from: 'news-gen', to: 'model-evaluation', color: getPackageColor('data-processing') },
+        
+        // AI & Supabase Connectors
+        { from: 'chat-processor', to: 'weather-services', color: getPackageColor('ml-development') },
+        { from: 'rotation-engine', to: 'weather-services', color: getPackageColor('ml-development') },
+        { from: 'insights-gen', to: 'weather-services', color: getPackageColor('ml-development') },
+        { from: 'news-gen', to: 'weather-services', color: getPackageColor('ml-development') },
+        
+        // Render Hosting Connections
+        { from: 'supabase-bridge', to: 'market-data', color: getPackageColor('model-storage') },
+        { from: 'supabase-bridge', to: 'model-selection', color: getPackageColor('model-storage') },
+        { from: 'supabase-bridge', to: 'access-policies', color: getPackageColor('model-storage') },
+        { from: 'supabase-bridge', to: 'dynamic-uploader', color: getPackageColor('model-storage') },
+        { from: 'metrics-database', to: 'model-repository', color: getPackageColor('model-storage') },
+        { from: 'uptime-monitor', to: 'model-repository', color: getPackageColor('model-storage') },
+        { from: 'model-repository', to: 'model-versioning', color: getPackageColor('model-storage') },
+        { from: 'model-versioning', to: 'feature-store', color: getPackageColor('model-storage') },
+        { from: 'feature-store', to: 'data-preprocessing', color: getPackageColor('model-storage') },
+        
+        // Return Flow (Backend → Frontend)
+        { from: 'feature-engineering', to: 'agr-data', color: getPackageColor('cloud-infra') },
+        { from: 'chat-processor', to: 'sensors', color: getPackageColor('cloud-infra') },
+        { from: 'pesticide-proc', to: 'weather', color: getPackageColor('cloud-infra') },
+        { from: 'fertilizer-proc', to: 'hist-data', color: getPackageColor('cloud-infra') },
+        { from: 'rotation-engine', to: 'user-input', color: getPackageColor('cloud-infra') },
+        { from: 'soil-engine', to: 'soil-ui', color: getPackageColor('cloud-infra') },
+        { from: 'insights-gen', to: 'insights-ui', color: getPackageColor('cloud-infra') },
+        { from: 'news-gen', to: 'news-ui', color: getPackageColor('cloud-infra') },
+        
+        // Frontend Layer Connections
+        { from: 'streamlit-app', to: 'responsive-ui', color: getPackageColor('frontend') },
+        { from: 'visualization', to: 'web-interface', color: getPackageColor('frontend') },
+        { from: 'web-interface', to: 'mobile-app', color: getPackageColor('frontend') },
+        
+        // Core Features Connections
+        { from: 'crop-prediction', to: 'ai-chatbot', color: getPackageColor('core-features') },
+        { from: 'ai-chatbot', to: 'pesticide-guide', color: getPackageColor('core-features') },
+        { from: 'pesticide-guide', to: 'soil-requirements', color: getPackageColor('core-features') },
+        { from: 'soil-requirements', to: 'crop-rotation', color: getPackageColor('core-features') },
+        
+        // Cloud Infrastructure Connections
+        { from: 'flask-api', to: 'model-serving', color: getPackageColor('cloud-infra') },
+        { from: 'model-serving', to: 'load-balancer', color: getPackageColor('cloud-infra') },
+        { from: 'load-balancer', to: 'api-gateway', color: getPackageColor('cloud-infra') },
+        { from: 'api-gateway', to: 'prediction-cache', color: getPackageColor('cloud-infra') },
+        { from: 'prediction-cache', to: 'user-sessions', color: getPackageColor('cloud-infra') }
+    ];
     
     // Draw each connection
     connections.forEach(conn => {

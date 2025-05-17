@@ -9,10 +9,10 @@ skinparam roundcorner 15
 skinparam linetype ortho
 skinparam backgroundColor #F8F8FF
 
-title Complete UML: Crop Prediction System with AI Features
+title 🌾 Separated Modules: Crop Prediction System (UML View)
 
-'======================= WEB INTERFACE =======================
-package "🌐 Web Interface (TypeScript + TailwindCSS + Netlify)" #E0FFFF {
+'======================= 🌐 TABLE 1: Web Interface =======================
+package "🌐 Web Interface\n(TypeScript + TailwindCSS + Netlify)" #E0FFFF {
   [Crop Prediction UI] as UI_Crop
   [AI Chatbot UI\n(Language Select, Chatbox)] as UI_Chat
   [Pesticide Store UI\n(Filters, Cards)] as UI_Pesticide
@@ -23,121 +23,118 @@ package "🌐 Web Interface (TypeScript + TailwindCSS + Netlify)" #E0FFFF {
   [News Page\n(Refresh → Questions)] as UI_News
 }
 
-'======================= BACKEND SERVICES =======================
-package "🧠 Backend Flask API + Gunicorn (Port 8081)" #FFFACD {
+'======================= 🧠 TABLE 2: Backend Services =======================
+package "🧠 Flask Backend API (Gunicorn @ 8081)" #FFFACD {
   [Crop Prediction Engine\n(Random Forest, KNN, SVM, NB)] as BE_Crop
-  [Model Comparator\n(Accuracy, F1, AUC, etc)] as ModelCompare
-  [Prediction Response Composer\n(JSON with crop + metrics)] as Responder
-  [Gunicorn Cache &\nSecurity Layer] as GunicornLayer
+  [Model Comparator\n(Metrics: Accuracy, F1, AUC)] as ModelCompare
+  [Prediction Response Composer] as Responder
+  [Gunicorn Cache & Security] as GunicornLayer
 
-  [Filter Processor (Pesticide)] as BE_Pesticide
-  [Filter Processor (Fertilizer)] as BE_Fertilizer
+  [Pesticide Filter Processor] as BE_Pesticide
+  [Fertilizer Filter Processor] as BE_Fertilizer
 
-  [Rotation Data Logic] as BE_Rotation
-  [Soil Data Logic] as BE_Soil
+  [Rotation Logic Engine] as BE_Rotation
+  [Soil Requirements Engine] as BE_Soil
 
-  [Chatbot Processor] as BE_Chat
-  [Insights Processor] as BE_Insights
-  [News Processor] as BE_News
-
-  [Gemini AI Connector] as GeminiAPI
+  [AI Chat Processor] as BE_Chat
+  [Insights Generator] as BE_Insights
+  [News Generator] as BE_News
 }
 
-'======================= SUPABASE DB =======================
-package "📦 Supabase (Tables + Buckets + Dynamic Storage)" #E6E6FA {
-  [Supabase Table\n(Crop Images + Names)] as SB_Crops
-  [Pesticide Table\n(Info, Ratings, Price, Image URL)] as SB_Pesticide
-  [Fertilizer Table\n(Info, Ratings, Price, Image URL)] as SB_Fertilizer
-  [Crop Rotation Table\n(Present → Next Crop, Period)] as SB_Rotation
-  [Soil Requirements Table\n(N, P, K, pH, etc)] as SB_Soil
-  [Insights Questions Table] as SB_Insights
-  [News Questions Table] as SB_News
-  [Supabase Bucket\n(Crop, Pesticide, Fertilizer Images)] as SB_Bucket
-  [Dynamic Upload Handler\n(For future image entries)] as SB_Uploader
-  [Supabase Access Policy\n(Read/Write + Image Bucket)] as SB_Policy
-  [Supabase Data Sync\n(Flask ↔ Supabase)] as SB_Sync
+'======================= 📦 TABLE 3: Supabase =======================
+package "📦 Supabase (Tables, Buckets, Auth)" #E6E6FA {
+  [Crop Table + Images] as SB_Crops
+  [Pesticide Table] as SB_Pesticide
+  [Fertilizer Table] as SB_Fertilizer
+  [Rotation Table] as SB_Rotation
+  [Soil Requirements Table] as SB_Soil
+  [Insights Qs Table] as SB_Insights
+  [News Qs Table] as SB_News
+  [Image Bucket Storage] as SB_Bucket
+  [Dynamic Uploader] as SB_Uploader
+  [Access Policies] as SB_Policy
+  [Data Sync Service] as SB_Sync
 }
 
-'======================= RENDER DEPLOYMENT =======================
-package "🚀 Render Hosting (ML API + Flask)" #FAF0E6 {
+'======================= 🚀 TABLE 4: Render Hosting =======================
+package "🚀 Render Hosting (Flask + ML Models)" #FAF0E6 {
   [Flask App Deployer] as Render_Flask
-  [ML Model Handler\n(Pretrained Models .pkl)] as Render_Models
-  [Gunicorn Runner\n(Concurrency & Port 8081)] as Render_Gunicorn
-  [API Endpoint Router\n(/predict, /compare, /chat)] as Render_API
-  [Secure Data I/O\n(Token + Header Validation)] as Render_Security
-  [Supabase API Bridge\n(Handle Image + JSON Fetch/Store)] as Render_SBBridge
-  [Uptime Monitor +\nAuto Restart (Render)] as Render_Health
+  [Pretrained Model Handler (.pkl)] as Render_Models
+  [Gunicorn Runner @8081] as Render_Gunicorn
+  [API Endpoint Router] as Render_API
+  [Token + Header Validator] as Render_Security
+  [Supabase Bridge] as Render_SBBridge
+  [Uptime Monitor / Auto-Restart] as Render_Health
 }
 
-'======================= CONNECTION FLOW =======================
-
+'======================= 🔄 TABLE 5: Logic + Flow =======================
 ' Crop Prediction
-UI_Crop --> BE_Crop : Send 7 Features (N, P, K, Temp, Humidity, pH, Rainfall)
-BE_Crop --> ModelCompare : Compare all 4 models
-ModelCompare --> Responder : Best model + metrics
+UI_Crop --> BE_Crop : Send 7 features (N, P, K, etc.)
+BE_Crop --> ModelCompare : Evaluate 4 models
+ModelCompare --> Responder : Choose best + metrics
 Responder --> SB_Crops : Get crop image
-Responder --> SB_Sync : Store results
-Responder --> UI_Crop : Return JSON (metrics + image)
-BE_Crop --> Render_Models : Load .pkl models
-BE_Crop --> Render_API : Access /predict route
-Render_API --> Render_Gunicorn : Process via 8081
-Render_Gunicorn --> GunicornLayer : Cache/Secure
+Responder --> SB_Sync : Store prediction result
+Responder --> UI_Crop : Return JSON + image
 
 ' Chatbot
-UI_Chat --> BE_Chat : Selected Language + Query
-BE_Chat --> Render_API : Access /chat route
-Render_API --> GeminiAPI : Query via Gemini Key
-GeminiAPI --> Render_API : Return Answer
-BE_Chat --> UI_Chat : Send Answer (Lang Respected)
+UI_Chat --> BE_Chat : Send Lang + Query
+BE_Chat --> Render_API : /chat
+Render_API --> GeminiAPI : Ask + Translate
+GeminiAPI --> BE_Chat : Return Lang-respected Answer
+BE_Chat --> UI_Chat : Display Answer
 
-' Pesticide Suggestion
-UI_Pesticide --> BE_Pesticide : Apply Filters (Crop, Rating, Price)
-BE_Pesticide --> SB_Pesticide : Fetch products
-BE_Pesticide --> SB_Bucket : Fetch image links
-BE_Pesticide --> UI_Pesticide : Return JSON (Product Cards)
-SB_Uploader --> SB_Policy : Allow dynamic insert
+' Pesticides
+UI_Pesticide --> BE_Pesticide : Send filters
+BE_Pesticide --> SB_Pesticide
+BE_Pesticide --> SB_Bucket
+BE_Pesticide --> UI_Pesticide : Return product JSON
 
-' Fertilizer Suggestion
-UI_Fertilizer --> BE_Fertilizer : Apply Filters
-BE_Fertilizer --> SB_Fertilizer : Get Data
-BE_Fertilizer --> SB_Bucket : Image URLs
-BE_Fertilizer --> UI_Fertilizer : Send Products View
+' Fertilizers
+UI_Fertilizer --> BE_Fertilizer : Filters
+BE_Fertilizer --> SB_Fertilizer
+BE_Fertilizer --> SB_Bucket
+BE_Fertilizer --> UI_Fertilizer
 
 ' Crop Rotation
-UI_Rotation --> BE_Rotation : Send Current Crop
-BE_Rotation --> SB_Rotation : Get next crop
-BE_Rotation --> GeminiAPI : Get benefits/notes
-BE_Rotation --> UI_Rotation : Return JSON with 4 fields
+UI_Rotation --> BE_Rotation : Present crop
+BE_Rotation --> SB_Rotation
+BE_Rotation --> GeminiAPI : Benefits & Notes
+BE_Rotation --> UI_Rotation : Return all 4 fields
 
-' Soil Requirement
+' Soil Info
 UI_Soil --> BE_Soil : Send crop name
-BE_Soil --> SB_Soil : Fetch soil min specs
-BE_Soil --> UI_Soil : Return nutrient + env info
+BE_Soil --> SB_Soil : Get values
+BE_Soil --> UI_Soil
 
-' Insights Page
-UI_Insights --> BE_Insights : On refresh
-BE_Insights --> SB_Insights : Get questions
-BE_Insights --> GeminiAPI : Query all questions
-GeminiAPI --> BE_Insights : Return answers
-BE_Insights --> UI_Insights : Show full insights
+' Insights + News
+UI_Insights --> BE_Insights : Refresh
+BE_Insights --> SB_Insights
+BE_Insights --> GeminiAPI
+BE_Insights --> UI_Insights
 
-' News Page
-UI_News --> BE_News : On refresh
-BE_News --> SB_News : Get news queries
-BE_News --> GeminiAPI : Query questions
-GeminiAPI --> BE_News : Return content
-BE_News --> UI_News : Display news cards
+UI_News --> BE_News : Refresh
+BE_News --> SB_News
+BE_News --> GeminiAPI
+BE_News --> UI_News
 
-' Render ↔ Supabase Bridge
-Render_SBBridge --> SB_Sync : Access crop results table
-Render_SBBridge --> SB_Bucket : Retrieve/store image content
-Render_SBBridge --> SB_Policy : Validate access rules
-Render_SBBridge --> SB_Uploader : Allow dynamic uploads
+'======================= 💡 TABLE 6: AI / Supabase Connectors =======================
+package "💡 AI & Supabase Connectors" #F5F5DC {
+  [Gemini AI Connector] as GeminiAPI
+  [Supabase Sync Handler] as SB_Sync
+  [Uploader Auth Logic] as SB_Policy
+}
 
-' Hosting Integration
-Render_Health --> Render_Flask : Restart on fail
-Render_Models --> Render_Flask : Load .pkl files
-Render_Flask --> Render_API : Expose endpoints
-Render_API --> Render_Gunicorn : WSGI binding
+' Render ↔ Supabase
+Render_SBBridge --> SB_Sync
+Render_SBBridge --> SB_Bucket
+Render_SBBridge --> SB_Policy
+Render_SBBridge --> SB_Uploader
+
+' Flask Integration
+Render_Models --> Render_Flask
+Render_Health --> Render_Flask
+Render_Flask --> Render_API
+Render_API --> Render_Gunicorn
+Render_Gunicorn --> GunicornLayer
 
 @enduml

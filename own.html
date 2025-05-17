@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agri-Assist Platform - Tables Layout</title>
+    <link rel="stylesheet" href="own.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="particles-bg" id="particles-js"></div>
+    
+    <nav class="main-nav">
+        <div class="nav-logo">Agri-Assist Platform</div>
+        <ul class="nav-links">
+            <li><a href="feature.html" class="nav-link">Architecture Flow</a></li>
+            <li><a href="own.html" class="nav-link active">Tables Layout</a></li>
+        </ul>
+    </nav>
+    
+    <div class="container">
+        <div class="tables-layout">
+            <!-- First Row of Tables -->
+            <div class="table-row">
+
+                <!-- Table 1 -->                
+                <div class="feature-table" id="web-interface">
+                    <div class="table-header">🌐 Web Interface
+                        <div class="connection-point plus" data-table="web-interface">+</div>
+                        <div class="connection-point minus" data-table="web-interface">−</div>
+                    </div>
+                    <div class="table-content">
+                        <ul>
+                            <li id="crop-prediction-ui" class="component-item">
+                                <div class="connection-point left plus" data-component="crop-prediction-ui">+</div>
+                                <span class="component-text">Crop Prediction UI</span>
+                                <div class="connection-point right minus" data-component="crop-prediction-ui">-</div>
+                            </li>
+                            <li id="ai-chatbot-ui" class="component-item">
+                                <div class="connection-point left plus" data-component="ai-chatbot-ui">+</div>
+                                <span class="component-text">AI Chatbot UI (Language Select, Chatbox)</span>
+                                <div class="connection-point right minus" data-component="ai-chatbot-ui">-</div>
+                            </li>
+                            <li id="store-ui" class="component-item">
+                                <div class="connection-point left plus" data-component="store-ui">+</div>
+                                <span class="component-text">Pesticide,Fertilizer Store UI (Filters, Cards)</span>
+                                <div class="connection-point right minus" data-component="store-ui">-</div>
+                            </li>
+                            <li id="rotation-guide-ui" class="component-item">
+                                <div class="connection-point left plus" data-component="rotation-guide-ui">+</div>
+                                <span class="component-text">Crop Rotation Guide UI</span>
+                                <div class="connection-point right minus" data-component="rotation-guide-ui">-</div>
+                            </li>
+                            <li id="soil-requirements-ui" class="component-item">
+                                <div class="connection-point left plus" data-component="soil-requirements-ui">+</div>
+                                <span class="component-text">Soil Requirements UI</span>
+                                <div class="connection-point right minus" data-component="soil-requirements-ui">-</div>
+                            </li>
+                            <li id="insights-news-page" class="component-item">
+                                <div class="connection-point left plus" data-component="insights-news-page">+</div>
+                                <span class="component-text">Insights,News Page</span>
+                                <div class="connection-point right minus" data-component="insights-news-page">-</div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Table 2 -->                
+                <div class="feature-table" id="flask-backend">
+                    <div class="table-header">🧠 Flask Backend
+                        <div class="connection-point plus" data-table="flask-backend">+</div>
+                        <div class="connection-point minus" data-table="flask-backend">−</div>
+                    </div>
+                    <div class="table-content">
+                        <ul>
+                            <li id="crop-prediction-engine" class="component-item">
+                                <div class="connection-point left plus" data-component="crop-prediction-engine">+</div>
+                                <span class="component-text">Crop Prediction Engine</span>
+                                <div class="connection-point right minus" data-component="crop-prediction-engine">-</div>
+                            </li>
+                            <li id="model-comparator" class="component-item">
+                                <div class="connection-point left plus" data-component="model-comparator">+</div>
+                                <span class="component-text">Model Comparator</span>
+                                <div class="connection-point right minus" data-component="model-comparator">-</div>
+                            </li>
+                            <li id="prediction-response" class="component-item">
+                                <div class="connection-point left plus" data-component="prediction-response">+</div>
+                                <span class="component-text">Prediction Response Composer</span>
+                                <div class="connection-point right minus" data-component="prediction-response">-</div>
+                            </li>
+                            <li id="filter-processor" class="component-item">
+                                <div class="connection-point left plus" data-component="filter-processor">+</div>
+                                <span class="component-text">Pesticide,Fertilizer Filter Processor</span>
+                                <div class="connection-point right minus" data-component="filter-processor">-</div>
+                            </li>
+                            <li id="rotation-logic" class="component-item">
+                                <div class="connection-point left plus" data-component="rotation-logic">+</div>
+                                <span class="component-text">Rotation Logic Engine</span>
+                                <div class="connection-point right minus" data-component="rotation-logic">-</div>
+                            </li>
+                            <li id="soil-requirements-engine" class="component-item">
+                                <div class="connection-point left plus" data-component="soil-requirements-engine">+</div>
+                                <span class="component-text">Soil Requirements Engine</span>
+                                <div class="connection-point right minus" data-component="soil-requirements-engine">-</div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Table 3 -->                
+                <div class="feature-table" id="supabase">
+                    <div class="table-header">📦 Supabase
+                        <div class="connection-point plus" data-table="supabase">+</div>
+                        <div class="connection-point minus" data-table="supabase">−</div>
+                    </div>
+                    <div class="table-content">
+                        <ul>
+                            <li id="crop-table" class="component-item">
+                                <div class="connection-point left plus" data-component="crop-table">+</div>
+                                <span class="component-text">Crop Table + Images</span>
+                                <div class="connection-point right minus" data-component="crop-table">-</div>
+                            </li>
+                            <li id="pesticide-fertilizer-table" class="component-item">
+                                <div class="connection-point left plus" data-component="pesticide-fertilizer-table">+</div>
+                                <span class="component-text">Pesticide,Fertilizer Table</span>
+                                <div class="connection-point right minus" data-component="pesticide-fertilizer-table">-</div>
+                            </li>
+                            <li id="rotation-table" class="component-item">
+                                <div class="connection-point left plus" data-component="rotation-table">+</div>
+                                <span class="component-text">Rotation Table</span>
+                                <div class="connection-point right minus" data-component="rotation-table">-</div>
+                            </li>
+                            <li id="soil-requirements-table" class="component-item">
+                                <div class="connection-point left plus" data-component="soil-requirements-table">+</div>
+                                <span class="component-text">Soil Requirements Table</span>
+                                <div class="connection-point right minus" data-component="soil-requirements-table">-</div>
+                            </li>
+                            <li id="insights-table" class="component-item">
+                                <div class="connection-point left plus" data-component="insights-table">+</div>
+                                <span class="component-text">Insights Qs Table</span>
+                                <div class="connection-point right minus" data-component="insights-table">-</div>
+                            </li>
+                            <li id="news-table" class="component-item">
+                                <div class="connection-point left plus" data-component="news-table">+</div>
+                                <span class="component-text">News Qs Table</span>
+                                <div class="connection-point right minus" data-component="news-table">-</div>
+                            </li>
+                            <li id="image-bucket" class="component-item">
+                                <div class="connection-point left plus" data-component="image-bucket">+</div>
+                                <span class="component-text">Image Bucket Storage</span>
+                                <div class="connection-point right minus" data-component="image-bucket">-</div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Table 4 -->                
+                <div class="feature-table" id="render-hosting">
+                    <div class="table-header">🚀 Render Hosting
+                        <div class="connection-point plus" data-table="render-hosting">+</div>
+                        <div class="connection-point minus" data-table="render-hosting">−</div>
+                    </div>
+                    <div class="table-content">
+                        <ul>
+                            <li id="flask-app-deployer" class="component-item">
+                                <div class="connection-point left plus" data-component="flask-app-deployer">+</div>
+                                <span class="component-text">Flask App Deployer</span>
+                                <div class="connection-point right minus" data-component="flask-app-deployer">-</div>
+                            </li>
+                            <li id="model-handler" class="component-item">
+                                <div class="connection-point left plus" data-component="model-handler">+</div>
+                                <span class="component-text">Pretrained Model Handler</span>
+                                <div class="connection-point right minus" data-component="model-handler">-</div>
+                            </li>
+                            <li id="gunicorn-runner" class="component-item">
+                                <div class="connection-point left plus" data-component="gunicorn-runner">+</div>
+                                <span class="component-text">Gunicorn Runner @8081</span>
+                                <div class="connection-point right minus" data-component="gunicorn-runner">-</div>
+                            </li>
+                            <li id="api-endpoint-router" class="component-item">
+                                <div class="connection-point left plus" data-component="api-endpoint-router">+</div>
+                                <span class="component-text">API Endpoint Router</span>
+                                <div class="connection-point right minus" data-component="api-endpoint-router">-</div>
+                            </li>
+                            <li id="supabase-bridge" class="component-item">
+                                <div class="connection-point left plus" data-component="supabase-bridge">+</div>
+                                <span class="component-text">Supabase Bridge</span>
+                                <div class="connection-point right minus" data-component="supabase-bridge">-</div>
+                            </li>
+                            <li id="uptime-monitor" class="component-item">
+                                <div class="connection-point left plus" data-component="uptime-monitor">+</div>
+                                <span class="component-text">Uptime Monitor</span>
+                                <div class="connection-point right minus" data-component="uptime-monitor">-</div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Second Row of Tables -->
+            <div class="table-row">
+                <!-- Table 5 -->                
+                <div class="feature-table" id="ai-supabase">
+                    <div class="table-header">💡 AI & Supabase
+                        <div class="connection-point plus" data-table="ai-supabase">+</div>
+                        <div class="connection-point minus" data-table="ai-supabase">−</div>
+                    </div>
+                    <div class="table-content">
+                        <ul>
+                            <li id="gemini-ai" class="component-item">
+                                <div class="connection-point left plus" data-component="gemini-ai">+</div>
+                                <span class="component-text">Gemini AI Connector</span>
+                                <div class="connection-point right minus" data-component="gemini-ai">-</div>
+                            </li>
+                            <li id="supabase-sync" class="component-item">
+                                <div class="connection-point left plus" data-component="supabase-sync">+</div>
+                                <span class="component-text">Supabase Sync Handler</span>
+                                <div class="connection-point right minus" data-component="supabase-sync">-</div>
+                            </li>
+                            <li id="uploader-auth" class="component-item">
+                                <div class="connection-point left plus" data-component="uploader-auth">+</div>
+                                <span class="component-text">Uploader Auth Logic</span>
+                                <div class="connection-point right minus" data-component="uploader-auth">-</div>
+                            </li>
+                            <li id="ai-chat-processor" class="component-item">
+                                <div class="connection-point left plus" data-component="ai-chat-processor">+</div>
+                                <span class="component-text">AI Chat Processor</span>
+                                <div class="connection-point right minus" data-component="ai-chat-processor">-</div>
+                            </li>
+                            <li id="insights-generator" class="component-item">
+                                <div class="connection-point left plus" data-component="insights-generator">+</div>
+                                <span class="component-text">Insights Generator</span>
+                                <div class="connection-point right minus" data-component="insights-generator">-</div>
+                            </li>
+                            <li id="news-generator" class="component-item">
+                                <div class="connection-point left plus" data-component="news-generator">+</div>
+                                <span class="component-text">News Generator</span>
+                                <div class="connection-point right minus" data-component="news-generator">-</div>
+                            </li>
+                            <li id="dynamic-uploader" class="component-item">
+                                <div class="connection-point left plus" data-component="dynamic-uploader">+</div>
+                                <span class="component-text">Dynamic Uploader</span>
+                                <div class="connection-point right minus" data-component="dynamic-uploader">-</div>
+                            </li>
+                            <li id="access-policies" class="component-item">
+                                <div class="connection-point left plus" data-component="access-policies">+</div>
+                                <span class="component-text">Access Policies</span>
+                                <div class="connection-point right minus" data-component="access-policies">-</div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Table 6 -->                
+                <div class="feature-table" id="frontend-layer">
+                    <div class="table-header">Frontend Layer
+                        <div class="connection-point plus" data-table="frontend-layer">+</div>
+                        <div class="connection-point minus" data-table="frontend-layer">−</div>
+                    </div>
+                    <div class="table-content">
+                        <ul>
+                            <li id="streamlit-app" class="component-item">
+                                <div class="connection-point left plus" data-component="streamlit-app">+</div>
+                                <span class="component-text">Streamlit App</span>
+                                <div class="connection-point right minus" data-component="streamlit-app">-</div>
+                            </li>
+                            <li id="visualization-engine" class="component-item">
+                                <div class="connection-point left plus" data-component="visualization-engine">+</div>
+                                <span class="component-text">Visualization Engine</span>
+                                <div class="connection-point right minus" data-component="visualization-engine">-</div>
+                            </li>
+                            <li id="web-interface" class="component-item">
+                                <div class="connection-point left plus" data-component="web-interface">+</div>
+                                <span class="component-text">Web Interface</span>
+                                <div class="connection-point right minus" data-component="web-interface">-</div>
+                            </li>
+                            <li id="data-sync-service" class="component-item">
+                                <div class="connection-point left plus" data-component="data-sync-service">+</div>
+                                <span class="component-text">Data Sync Service</span>
+                                <div class="connection-point right minus" data-component="data-sync-service">-</div>
+                            </li>
+                            <li id="ui-components" class="component-item">
+                                <div class="connection-point left plus" data-component="ui-components">+</div>
+                                <span class="component-text">User Interface Components</span>
+                                <div class="connection-point right minus" data-component="ui-components">-</div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Table 7 -->                
+                <div class="feature-table" id="cloud-infrastructure">
+                    <div class="table-header">Cloud Infrastructure
+                        <div class="connection-point plus" data-table="cloud-infrastructure">+</div>
+                        <div class="connection-point minus" data-table="cloud-infrastructure">−</div>
+                    </div>
+                    <div class="table-content">
+                        <ul>
+                            <li id="flask-api" class="component-item">
+                                <div class="connection-point left plus" data-component="flask-api">+</div>
+                                <span class="component-text">Flask API</span>
+                                <div class="connection-point right minus" data-component="flask-api">-</div>
+                            </li>
+                            <li id="model-serving" class="component-item">
+                                <div class="connection-point left plus" data-component="model-serving">+</div>
+                                <span class="component-text">Model Serving</span>
+                                <div class="connection-point right minus" data-component="model-serving">-</div>
+                            </li>
+                            <li id="api-gateway" class="component-item">
+                                <div class="connection-point left plus" data-component="api-gateway">+</div>
+                                <span class="component-text">API Gateway</span>
+                                <div class="connection-point right minus" data-component="api-gateway">-</div>
+                            </li>
+                            <li id="user-sessions" class="component-item">
+                                <div class="connection-point left plus" data-component="user-sessions">+</div>
+                                <span class="component-text">User Sessions</span>
+                                <div class="connection-point right minus" data-component="user-sessions">-</div>
+                            </li>
+                            <li id="system-logs" class="component-item">
+                                <div class="connection-point left plus" data-component="system-logs">+</div>
+                                <span class="component-text">System Logs</span>
+                                <div class="connection-point right minus" data-component="system-logs">-</div>
+                            </li>
+                            <li id="monitoring-dashboard" class="component-item">
+                                <div class="connection-point left plus" data-component="monitoring-dashboard">+</div>
+                                <span class="component-text">Monitoring Dashboard</span>
+                                <div class="connection-point right minus" data-component="monitoring-dashboard">-</div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Table 8 -->                
+                <div class="feature-table" id="core-features">
+                    <div class="table-header">Core Features
+                        <div class="connection-point plus" data-table="core-features">+</div>
+                        <div class="connection-point minus" data-table="core-features">−</div>
+                    </div>
+                    <div class="table-content">
+                        <ul>
+                            <li id="crop-prediction" class="component-item">
+                                <div class="connection-point left plus" data-component="crop-prediction">+</div>
+                                <span class="component-text">Crop Prediction</span>
+                                <div class="connection-point right minus" data-component="crop-prediction">-</div>
+                            </li>
+                            <li id="ai-chatbot" class="component-item">
+                                <div class="connection-point left plus" data-component="ai-chatbot">+</div>
+                                <span class="component-text">AI Chatbot</span>
+                                <div class="connection-point right minus" data-component="ai-chatbot">-</div>
+                            </li>
+                            <li id="pesticide-guide" class="component-item">
+                                <div class="connection-point left plus" data-component="pesticide-guide">+</div>
+                                <span class="component-text">Pesticide Guide</span>
+                                <div class="connection-point right minus" data-component="pesticide-guide">-</div>
+                            </li>
+                            <li id="soil-requirements" class="component-item">
+                                <div class="connection-point left plus" data-component="soil-requirements">+</div>
+                                <span class="component-text">Soil Requirements</span>
+                                <div class="connection-point right minus" data-component="soil-requirements">-</div>
+                            </li>
+                            <li id="crop-rotation" class="component-item">
+                                <div class="connection-point left plus" data-component="crop-rotation">+</div>
+                                <span class="component-text">Crop Rotation</span>
+                                <div class="connection-point right minus" data-component="crop-rotation">-</div>
+                            </li>
+                            <li id="data-management" class="component-item">
+                                <div class="connection-point left plus" data-component="data-management">+</div>
+                                <span class="component-text">Data Management</span>
+                                <div class="connection-point right minus" data-component="data-management">-</div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- SVG Container for Connections -->
+            <svg id="connections-container" class="connections-container"></svg>
+            
+            <!-- Connection Controls -->
+            <div class="connection-controls">
+                <button id="save-connections" class="save-btn">Save Connections</button>
+                <button id="clear-connections" class="clear-btn">Clear All</button>
+                <div id="connection-status" class="connection-status"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="own.js"></script>
+</body>
+</html>
